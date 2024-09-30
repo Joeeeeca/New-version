@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://kit.fontawesome.com/557667a600.js" crossorigin="anonymous"></script>
+    <title>What I Do</title>
+</head>
+<body class="what-i-do-body">
+    <div id="size-checker">Width: 0px, Height: 0px</div>
+
+    <header>
+        <div class="navbar">
+            <a href="#home"><div class="logo">
+                <img src="images/logo.png" alt="Logo" width="100">
+            </div></a>
+            <nav class="primary-nav">
+                <a href="index.html">Home</a>
+                <a href="what-i-do.html">About</a>
+                <a href="courses.html">Courses</a>
+                <a href="testimonials.html">Testimonials</a>
+                <a href="contact.html">Contact</a>
+            </nav>
+        </div>
+
+</header>
+    <section class="what-i-do-section active" id="what-i-do">
+        <h2>A Different Way of Thinking</h2>
+        <p>
+            There is a common belief that elite sports performers have a natural gift to remain calm and focused during high pressure situations, a gift that can’t be learnt. This view is common but completely false. I agree that some competitors are naturally more focused than others however anyone can learn to remain focused and certain in extremely challenging situations.
+        </p>
+        <p>
+            Have you ever felt incredibly confident and asked yourself why? Your search for the answer probably came from an external source. You may have won a recent match or tournament. Maybe your current performances are of a high standard. When you experience anxiety and apprehension it can feel that infinite catastrophes are inevitable however when you feel confident the competitive arena can be a place to push hard, thrive, grow and of course perform to your very best. Therefore, the challenge is a familiar one. We need to feel confident to perform well but we need to perform well to build confidence. My work is centred around the ability to create a psychological state that is appropriate to the situation you face. You may require an intense state of certainty or remain calm and relaxed. When you master the ability to consciously generate a state of mind you will then understand why I call it the sports competitor’s super power.
+        </p>
+        <p>
+            In a nutshell you produce a state of confidence, certainty, focus or composure and project that onto the external world so your environment now looks and feels very different. Instead of the competitive challenge and environment defining your state you create an appropriate one consciously.
+        </p>
+    </section>
+    <footer>
+        <div class="footer-links">
+          <a class="phone-link" href="https://wa.me/+447753286234">
+            <i class="fa fa-phone" aria-hidden="true"></i>
+            07753 286 234
+          </a>
+      
+          <a class="email-link" href="mailto:info@simoncapon.co.uk">
+            <i class="fa fa-envelope" aria-hidden="true"></i>
+            info@simoncapon.co.uk
+          </a>
+        </div>
+    
+      </footer>
+
+      <script src="scripts/what-i-do.js"></script>
+</body>
+</html>
+<script>
+    // Ensure that the script runs only after the page has loaded
+   window.onload = function() {
+       // Select the div element
+       const sizeChecker = document.getElementById('size-checker');
+   
+       // Function to update the width and height display
+       function updateSize() {
+           const width = window.innerWidth; // Get the current screen width
+           const height = window.innerHeight; // Get the current screen height
+           console.log(`Calculated width: ${width}px, height: ${height}px`); // Log the calculated width and height to the console
+           sizeChecker.innerText = `Width: ${width}px, Height: ${height}px`; // Update the div's text
+       }
+   
+       // Update the size display when the page loads
+       updateSize();
+   
+       // Update the size display when the window is resized
+       window.addEventListener('resize', updateSize);
+   };
+   
+       </script>
