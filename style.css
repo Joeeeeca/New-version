@@ -375,6 +375,7 @@ h2 {
     header {
         position:fixed;
         top:0px;
+      left: 0px;
         z-index:100;
         background: linear-gradient(135deg, #020202, #2c2b2b);
         width:100%;
