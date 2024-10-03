@@ -2495,8 +2495,8 @@ button.submit-btn {
 
 @media (max-width: 374px) {
     .contact-section {
-        margin-top:-10px;
-        height:105vh;
+        margin-top: 0px;
+        height:120vh;
     }
     
     .form-header,
