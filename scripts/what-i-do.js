@@ -78,6 +78,7 @@ window.addEventListener('load', () => {
 
 // Function to handle swipe down
 const handleSwipeDown = () => {
+    console.log('Handling swipe down...');
     const sections = document.querySelectorAll('.what-i-do-section, .training-info, .pricing-container, .testimonial-section, .form-header, .form-container, .contact-details-header, .contact-details');
     sections.forEach(section => {
         section.classList.remove('slide-fade-in');
@@ -88,6 +89,7 @@ const handleSwipeDown = () => {
 
 // Function to handle swipe up
 const handleSwipeUp = () => {
+    console.log('Handling swipe up...');
     const sections = document.querySelectorAll('.what-i-do-section, .training-info, .pricing-container, .testimonial-section, .form-header, .form-container, .contact-details-header, .contact-details');
     sections.forEach(section => {
         section.classList.remove('slide-fade-out');
@@ -98,8 +100,9 @@ const handleSwipeUp = () => {
 
 // Function to handle fade-out effect when navigating away
 const applyFadeOutEffect = (link) => {
+    console.log('Applying fade-out effect for navigation...');
     const sections = document.querySelectorAll('.what-i-do-section, .training-info, .pricing-container, .testimonial-section, .form-header, .form-container, .contact-details-header, .contact-details');
-    
+
     // Remove fade-in and apply fade-out to all sections
     sections.forEach(section => {
         section.classList.remove('slide-fade-in');
@@ -109,6 +112,7 @@ const applyFadeOutEffect = (link) => {
 
     // Wait for the animation to finish before navigating
     setTimeout(() => {
+        console.log('Navigating to:', link.href); // Log the navigation
         window.location.href = link.href; // Navigate after fade-out is done
     }, 2000); // Adjust this duration to match your animation length
 };
