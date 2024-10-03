@@ -50,8 +50,7 @@ window.addEventListener('load', () => {
     });
 
     // Handle touchmove event for touch screens
-    window.addEventListener('touchmove', (event) => {
-        if (!isTouching) return; // Only run if touch is ongoing
+    window.addEventListener('touchmove', () => {
         handleScrollTransitions();
     });
 
