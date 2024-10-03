@@ -1,4 +1,6 @@
 let isScrolling = false;
+let touchStartY = 0; // Store starting Y position for swipe
+let touchEndY = 0;   // Store ending Y position for swipe
 
 document.addEventListener('DOMContentLoaded', () => {
     // Handle fade-in effect when page loads
@@ -14,8 +16,6 @@ document.addEventListener('DOMContentLoaded', () => {
         link.addEventListener('click', (event) => {
             // Prevent default link behavior
             event.preventDefault();
-
-            // Get target page URL
             const targetUrl = link.getAttribute('href');
             console.log('Navigation link clicked, target URL:', targetUrl);
 
@@ -39,7 +39,7 @@ const applyFadeOutEffect = (callback) => {
     }
     
     if (aboutContainer && currentSection.id !== 'about') {
-        aboutContainer.classList.remove('slide-fade-in')
+        aboutContainer.classList.remove('slide-fade-in');
         aboutContainer.classList.add('slide-fade-out');
     }
 
@@ -50,26 +50,18 @@ const applyFadeOutEffect = (callback) => {
     }, 1000); // Match the duration of the fade-out animation
 };
 
-
 // Function to handle section transitions
 const handleSectionTransition = (direction) => {
     console.log(`${direction} section function called`);
-
     const currentSection = document.querySelector('.section.active');
     if (currentSection) {
         console.log("Current section found:", currentSection);
-
-        // Apply fade-out effect to current section before transitioning
         applyFadeOutEffect(() => {
             const targetSection = direction === 'next' ? currentSection.nextElementSibling : currentSection.previousElementSibling;
             if (targetSection && targetSection.classList.contains('section')) {
                 console.log(`${direction.charAt(0).toUpperCase() + direction.slice(1)} section found:`, targetSection);
-
-                // Delay scrolling to target section
                 setTimeout(() => {
                     targetSection.scrollIntoView({ behavior: 'smooth' });
-
-                    // Update the active section class
                     currentSection.classList.remove('active');
                     targetSection.classList.add('active');
                     console.log("Updated active section class");
@@ -102,28 +94,19 @@ const handleSectionTransition = (direction) => {
 const scrollToNextSection = () => handleSectionTransition('next');
 const scrollToPreviousSection = () => handleSectionTransition('previous');
 
-
-
 // Function to handle page navigation click
 const handleNavigationClick = (event) => {
     console.log("Navigation click function called");
-
     const link = event.currentTarget;
     if (link.hash) {
         event.preventDefault(); // Prevent default link behavior
         const targetId = link.getAttribute('href').substring(1); // Remove the '#' from the href
         const targetSection = document.getElementById(targetId);
-
         if (targetSection) {
             console.log("Target section found:", targetSection);
-
-            // Apply fade-out effect to current section before navigating
             applyFadeOutEffect(() => {
-                // Delay navigation to target section
                 setTimeout(() => {
                     targetSection.scrollIntoView({ behavior: 'smooth' });
-
-                    // Update the active section class
                     const currentSection = document.querySelector('.section.active');
                     if (currentSection) {
                         currentSection.classList.remove('active');
@@ -131,8 +114,6 @@ const handleNavigationClick = (event) => {
                     }
                     targetSection.classList.add('active');
                     console.log("Added 'active' class to target section");
-
-                    // Apply fade-in effect to new section
                     if (targetSection.id === 'about') {
                         const aboutContainer = document.querySelector('.about-container');
                         if (aboutContainer) {
@@ -157,7 +138,6 @@ const handleNavigationClick = (event) => {
 // Function to add event listeners to navigation links
 const initializeNavigation = () => {
     console.log("initializeNavigation function called");
-
     const navLinks = document.querySelectorAll('nav a'); // Adjust this selector for your navigation links
     navLinks.forEach(link => {
         link.addEventListener('click', handleNavigationClick);
@@ -167,7 +147,6 @@ const initializeNavigation = () => {
 // Function to ensure the page starts at the correct section
 const initializePage = () => {
     console.log("initializePage function called");
-
     const startSection = document.querySelector('#home');
     if (startSection) {
         console.log("Start section found:", startSection);
@@ -184,7 +163,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initializeNavigation(); // Initialize navigation click listeners
 });
 
-// Event listener for scroll functionality
+// Event listener for mouse scroll functionality
 document.addEventListener('wheel', (event) => {
     if (!isScrolling) { // Throttle scrolling
         isScrolling = true;
@@ -201,28 +180,26 @@ document.addEventListener('wheel', (event) => {
     }
 });
 
-document.addEventListener('DOMContentLoaded', function () {
-    // Get all sections
-    const aboutSection = document.getElementById('about');
-    const homeSection = document.getElementById('home');
-    
-    // Scroll listener to check when #about is active
-    function handleSectionScroll() {
-        if (aboutSection.classList.contains('active')) {
-            document.body.style.overflowY = 'auto'; // Enable scrolling
-        } else {
-            document.body.style.overflowY = 'hidden'; // Disable scrolling
-        }
-    }
+// Touch event listeners for swipe detection
+document.addEventListener('touchstart', (event) => {
+    touchStartY = event.touches[0].clientY; // Get the starting Y position
+}, { passive: true });
 
-    // Run on page load and also when navigating between sections
-    window.addEventListener('scroll', handleSectionScroll);
+document.addEventListener('touchend', (event) => {
+    touchEndY = event.changedTouches[0].clientY; // Get the ending Y position
+    handleSwipe(); // Handle the swipe direction
 });
 
-document.addEventListener('wheel', (e) => {
-    e.preventDefault();
-    window.scrollBy({
-      top: e.deltaY,
-      behavior: 'smooth'
-    });
-  }, { passive: false });
+// Handle swipe direction
+const handleSwipe = () => {
+    const threshold = 50; // Minimum distance for a valid swipe
+    const swipeDistance = touchEndY - touchStartY;
+
+    if (swipeDistance > threshold) {
+        console.log("Swipe down detected");
+        scrollToPreviousSection(); // Scroll up on swipe down
+    } else if (swipeDistance < -threshold) {
+        console.log("Swipe up detected");
+        scrollToNextSection(); // Scroll down on swipe up
+    }
+};
