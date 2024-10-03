@@ -3,29 +3,95 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Touch Test</title>
+    <title>What I Do Test</title>
     <style>
         body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            scroll-snap-type: y mandatory;
+            overflow-y: scroll;
             height: 100vh;
-            background-color: lightblue;
-            text-align: center;
-            line-height: 100vh;
+            background-color: #f0f0f0;
+        }
+        section {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 2rem;
+            color: white;
+            scroll-snap-align: start;
+            transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        .fade-in {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .fade-out {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        .section1 {
+            background-color: #3498db; /* Blue */
+        }
+        .section2 {
+            background-color: #e74c3c; /* Red */
+        }
+        .section3 {
+            background-color: #2ecc71; /* Green */
         }
     </style>
 </head>
 <body>
-    <h1>Touch Test</h1>
+    <section class="section1">Section 1</section>
+    <section class="section2">Section 2</section>
+    <section class="section3">Section 3</section>
+
     <script>
-        document.addEventListener('touchstart', () => {
-            console.log('Touch started');
-        });
+        window.addEventListener('load', () => {
+            const sections = document.querySelectorAll('section');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('fade-in');
+                        entry.target.classList.remove('fade-out');
+                    } else {
+                        entry.target.classList.remove('fade-in');
+                        entry.target.classList.add('fade-out');
+                    }
+                });
+            }, { threshold: 0.1 });
 
-        document.addEventListener('touchend', () => {
-            console.log('Touch ended');
-        });
+            sections.forEach(section => {
+                observer.observe(section);
+            });
 
-        document.addEventListener('touchmove', () => {
-            console.log('Touch moving');
+            // Touch handling for swiping
+            let isTouching = false;
+            let startY = 0;
+
+            window.addEventListener('touchstart', (event) => {
+                isTouching = true;
+                startY = event.touches[0].clientY;
+            });
+
+            window.addEventListener('touchend', () => {
+                isTouching = false;
+            });
+
+            window.addEventListener('touchmove', (event) => {
+                if (!isTouching) return;
+                const currentY = event.touches[0].clientY;
+                const swipeDistance = currentY - startY;
+
+                if (swipeDistance > 50) {
+                    console.log('Swiped down');
+                } else if (swipeDistance < -50) {
+                    console.log('Swiped up');
+                }
+            });
         });
     </script>
 </body>
