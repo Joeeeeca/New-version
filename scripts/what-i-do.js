@@ -50,13 +50,12 @@ window.addEventListener('load', () => {
     window.addEventListener('touchend', (event) => {
         console.log('Touch ended'); // Log touch end
         isTouching = false;
-        handleScrollTransitions(); // Call to handle any transitions if necessary
     });
 
     // Handle touchmove event for touch screens
     window.addEventListener('touchmove', (event) => {
         if (!isTouching) return; // Only run if touch is ongoing
-        
+
         const currentY = event.touches[0].clientY; // Get current Y position
         const swipeDistance = currentY - startY; // Calculate distance swiped
         console.log('Touch moving:', currentY, 'Swipe Distance:', swipeDistance); // Log current Y and swipe distance
@@ -64,11 +63,11 @@ window.addEventListener('load', () => {
         // Log swipe direction
         if (swipeDistance > 20) {
             console.log('Swiped down:', swipeDistance);
+            handleSwipeDown();
         } else if (swipeDistance < -20) {
             console.log('Swiped up:', swipeDistance);
+            handleSwipeUp();
         }
-
-        handleScrollTransitions(); // Call to handle any transitions if necessary
     });
 
     // Also handle scroll event for normal scrolling behavior
@@ -76,6 +75,26 @@ window.addEventListener('load', () => {
         handleScrollTransitions();
     });
 });
+
+// Function to handle swipe down
+const handleSwipeDown = () => {
+    const sections = document.querySelectorAll('.what-i-do-section, .training-info, .pricing-container, .testimonial-section, .form-header, .form-container, .contact-details-header, .contact-details');
+    sections.forEach(section => {
+        section.classList.remove('slide-fade-in');
+        section.classList.add('slide-fade-out');
+        console.log('slide-fade-out class added to', section.classList);
+    });
+};
+
+// Function to handle swipe up
+const handleSwipeUp = () => {
+    const sections = document.querySelectorAll('.what-i-do-section, .training-info, .pricing-container, .testimonial-section, .form-header, .form-container, .contact-details-header, .contact-details');
+    sections.forEach(section => {
+        section.classList.remove('slide-fade-out');
+        section.classList.add('slide-fade-in');
+        console.log('slide-fade-in class added to', section.classList);
+    });
+};
 
 // Function to handle fade-out effect when navigating away
 const applyFadeOutEffect = (link) => {
