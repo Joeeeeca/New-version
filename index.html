@@ -136,5 +136,17 @@ info@simoncapon.co.uk
        // Update the size display when the window is resized
        window.addEventListener('resize', updateSize);
    };
+
+     document.addEventListener('touchstart', () => {
+            console.log('Touch started');
+        });
+
+        document.addEventListener('touchend', () => {
+            console.log('Touch ended');
+        });
+
+        document.addEventListener('touchmove', () => {
+            console.log('Touch moving');
+        });
    
        </script>
