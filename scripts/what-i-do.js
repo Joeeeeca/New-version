@@ -41,7 +41,7 @@ window.addEventListener('load', () => {
 
     // Handle touchstart event
     window.addEventListener('touchstart', (event) => {
-        console.log('Touch started', event.touches[0].clientY); // Log touch start with Y position
+        console.log('Touch started at:', event.touches[0].clientY); // Log touch start with Y position
         isTouching = true;
         startY = event.touches[0].clientY; // Store initial Y position
     });
@@ -50,7 +50,7 @@ window.addEventListener('load', () => {
     window.addEventListener('touchend', (event) => {
         console.log('Touch ended'); // Log touch end
         isTouching = false;
-        handleScrollTransitions();
+        handleScrollTransitions(); // Call to handle any transitions if necessary
     });
 
     // Handle touchmove event for touch screens
@@ -68,7 +68,7 @@ window.addEventListener('load', () => {
             console.log('Swiped up:', swipeDistance);
         }
 
-        handleScrollTransitions();
+        handleScrollTransitions(); // Call to handle any transitions if necessary
     });
 
     // Also handle scroll event for normal scrolling behavior
