@@ -35,8 +35,23 @@ window.addEventListener('load', () => {
         });
     });
 
-    // Handle touch event for touch screens
-    window.addEventListener('touchmove', () => {
+    // Set up flags for touch and scroll events
+    let isTouching = false;
+
+    // Handle touchstart event
+    window.addEventListener('touchstart', () => {
+        isTouching = true;
+    });
+
+    // Handle touchend event
+    window.addEventListener('touchend', () => {
+        isTouching = false;
+        handleScrollTransitions();
+    });
+
+    // Handle touchmove event for touch screens
+    window.addEventListener('touchmove', (event) => {
+        if (!isTouching) return; // Only run if touch is ongoing
         handleScrollTransitions();
     });
 
