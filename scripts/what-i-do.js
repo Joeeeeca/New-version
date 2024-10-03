@@ -40,17 +40,21 @@ window.addEventListener('load', () => {
 
     // Handle touchstart event
     window.addEventListener('touchstart', () => {
+        console.log('Touch started'); // Log touch start
         isTouching = true;
     });
 
     // Handle touchend event
     window.addEventListener('touchend', () => {
+        console.log('Touch ended'); // Log touch end
         isTouching = false;
         handleScrollTransitions();
     });
 
     // Handle touchmove event for touch screens
-    window.addEventListener('touchmove', () => {
+    window.addEventListener('touchmove', (event) => {
+        console.log('Touch moving'); // Log touch move
+        if (!isTouching) return; // Only run if touch is ongoing
         handleScrollTransitions();
     });
 
@@ -79,17 +83,18 @@ const applyFadeOutEffect = (link) => {
 
 // Handle scroll transitions for touch and scroll events
 const handleScrollTransitions = () => {
+    console.log('Handling scroll transitions...'); // Log to confirm the function is called
     const sections = document.querySelectorAll('.what-i-do-section, .training-info, .pricing-container, .testimonial-section, .form-header, .form-container, .contact-details-header, .contact-details');
 
     sections.forEach(section => {
         if (isElementInViewport(section)) {
+            console.log(`Section in view: ${section.classList}`); // Log which section is in view
             section.classList.add('slide-fade-in');
             section.classList.remove('slide-fade-out');
-            console.log('slide-fade-in class added to', section.classList);
         } else {
+            console.log(`Section out of view: ${section.classList}`); // Log which section is out of view
             section.classList.remove('slide-fade-in');
             section.classList.add('slide-fade-out');
-            console.log('slide-fade-out class added to', section.classList);
         }
     });
 };
