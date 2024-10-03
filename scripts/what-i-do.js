@@ -79,23 +79,37 @@ window.addEventListener('load', () => {
 // Function to handle swipe down
 const handleSwipeDown = () => {
     console.log('Handling swipe down...');
-    const sections = document.querySelectorAll('.what-i-do-section, .training-info, .pricing-container, .testimonial-section, .form-header, .form-container, .contact-details-header, .contact-details');
-    sections.forEach(section => {
-        section.classList.remove('slide-fade-in');
-        section.classList.add('slide-fade-out');
-        console.log('slide-fade-out class added to', section.classList);
-    });
+    const currentSection = document.querySelector('.what-i-do-section.slide-fade-in'); // Get currently visible section
+    const nextSection = document.querySelector('.about-container'); // Specify the section to show next
+
+    if (currentSection && nextSection) {
+        currentSection.classList.remove('slide-fade-in'); // Remove from current
+        currentSection.classList.add('slide-fade-out'); // Add fade out to current
+
+        // Delay adding the fade-in class to the next section to allow for transition
+        setTimeout(() => {
+            nextSection.classList.remove('slide-fade-out'); // Ensure it starts hidden
+            nextSection.classList.add('slide-fade-in'); // Add fade-in to next
+        }, 300); // Adjust this delay to match your fade-out animation time
+    }
 };
 
 // Function to handle swipe up
 const handleSwipeUp = () => {
     console.log('Handling swipe up...');
-    const sections = document.querySelectorAll('.what-i-do-section, .training-info, .pricing-container, .testimonial-section, .form-header, .form-container, .contact-details-header, .contact-details');
-    sections.forEach(section => {
-        section.classList.remove('slide-fade-out');
-        section.classList.add('slide-fade-in');
-        console.log('slide-fade-in class added to', section.classList);
-    });
+    const currentSection = document.querySelector('.what-i-do-section.slide-fade-in'); // Get currently visible section
+    const previousSection = document.querySelector('.previous-section'); // Specify the section to show next
+
+    if (currentSection && previousSection) {
+        currentSection.classList.remove('slide-fade-in'); // Remove from current
+        currentSection.classList.add('slide-fade-out'); // Add fade out to current
+
+        // Delay adding the fade-in class to the previous section to allow for transition
+        setTimeout(() => {
+            previousSection.classList.remove('slide-fade-out'); // Ensure it starts hidden
+            previousSection.classList.add('slide-fade-in'); // Add fade-in to previous
+        }, 300); // Adjust this delay to match your fade-out animation time
+    }
 };
 
 // Function to handle fade-out effect when navigating away
