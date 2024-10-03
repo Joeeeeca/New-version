@@ -218,3 +218,11 @@ document.addEventListener('DOMContentLoaded', function () {
     // Run on page load and also when navigating between sections
     window.addEventListener('scroll', handleSectionScroll);
 });
+
+document.addEventListener('wheel', (e) => {
+    e.preventDefault();
+    window.scrollBy({
+      top: e.deltaY,
+      behavior: 'smooth'
+    });
+  }, { passive: false });
