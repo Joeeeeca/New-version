@@ -9,12 +9,17 @@ window.addEventListener('load', () => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 entry.target.classList.add('slide-fade-in');
+                entry.target.classList.remove('slide-fade-out');
                 console.log('slide-fade-in class added to', entry.target.classList);
+            } else {
+                entry.target.classList.remove('slide-fade-in');
+                entry.target.classList.add('slide-fade-out');
+                console.log('slide-fade-out class added to', entry.target.classList);
             }
         });
     }, { threshold: 0.1 }); // Adjust the threshold as needed
 
-    // Observe all relevant sections for fade-in
+    // Observe all relevant sections for fade-in and fade-out
     sections.forEach(section => {
         if (section) {
             observer.observe(section);
@@ -29,53 +34,50 @@ window.addEventListener('load', () => {
             applyFadeOutEffect(link);
         });
     });
+
+    // Handle touch event for touch screens
+    window.addEventListener('touchmove', () => {
+        handleScrollTransitions();
+    });
+
+    // Also handle scroll event for normal scrolling behavior
+    window.addEventListener('scroll', () => {
+        handleScrollTransitions();
+    });
 });
 
 // Function to handle fade-out effect when navigating away
 const applyFadeOutEffect = (link) => {
-    const whatIDoSection = document.querySelector('.what-i-do-section');
-    const trainingInfo = document.querySelector('.training-info');
-    const pricingContainer = document.querySelector('.pricing-container');
-    const testimonialSection = document.querySelector('.testimonial-section');
-    const formHeader = document.querySelector('.form-header');
-    const formContainer = document.querySelector('.form-container');
-    const contactDetailsHeader = document.querySelector('.contact-details-header');
-    const contactDetails = document.querySelector('.contact-details');
-
-    // Remove fade-in and apply fade-out
-    if (whatIDoSection) {
-        whatIDoSection.classList.remove('slide-fade-in');
-        whatIDoSection.classList.add('slide-fade-out');
-        console.log('slide-fade-out class added to .what-i-do-section');
-    }
-    if (trainingInfo && pricingContainer) {
-        trainingInfo.classList.remove('slide-fade-in');
-        trainingInfo.classList.add('slide-fade-out');
-        pricingContainer.classList.remove('slide-fade-in');
-        pricingContainer.classList.add('slide-fade-out');
-        console.log('slide-fade-out class added to trainingInfo and pricingContainer');
-    }
-    if (testimonialSection) {
-        testimonialSection.classList.remove('slide-fade-in');
-        testimonialSection.classList.add('slide-fade-out');
-        console.log('slide-fade-out class added to testimonial section');
-    }
-    if (formHeader && formContainer && contactDetailsHeader && contactDetails) {
-        formHeader.classList.remove('slide-fade-in');
-        formHeader.classList.add('slide-fade-out');
-        formContainer.classList.remove('slide-fade-in');
-        formContainer.classList.add('slide-fade-out');
-        contactDetailsHeader.classList.remove('slide-fade-in');
-        contactDetailsHeader.classList.add('slide-fade-out');
-        contactDetails.classList.remove('slide-fade-in');
-        contactDetails.classList.add('slide-fade-out');
-        console.log('slide-fade-out class added to formHeader, formContainer, contactDetailsHeader and contactDetails');
-    }
+    const sections = document.querySelectorAll('.what-i-do-section, .training-info, .pricing-container, .testimonial-section, .form-header, .form-container, .contact-details-header, .contact-details');
+    
+    // Remove fade-in and apply fade-out to all sections
+    sections.forEach(section => {
+        section.classList.remove('slide-fade-in');
+        section.classList.add('slide-fade-out');
+        console.log('slide-fade-out class added to', section.classList);
+    });
 
     // Wait for the animation to finish before navigating
     setTimeout(() => {
         window.location.href = link.href; // Navigate after fade-out is done
     }, 2000); // Adjust this duration to match your animation length
+};
+
+// Handle scroll transitions for touch and scroll events
+const handleScrollTransitions = () => {
+    const sections = document.querySelectorAll('.what-i-do-section, .training-info, .pricing-container, .testimonial-section, .form-header, .form-container, .contact-details-header, .contact-details');
+
+    sections.forEach(section => {
+        if (isElementInViewport(section)) {
+            section.classList.add('slide-fade-in');
+            section.classList.remove('slide-fade-out');
+            console.log('slide-fade-in class added to', section.classList);
+        } else {
+            section.classList.remove('slide-fade-in');
+            section.classList.add('slide-fade-out');
+            console.log('slide-fade-out class added to', section.classList);
+        }
+    });
 };
 
 // Utility function to check if element is in viewport
