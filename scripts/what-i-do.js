@@ -3,18 +3,19 @@ window.addEventListener('load', () => {
 
     // Handle fade-in effect for sections when the page loads
     const sections = document.querySelectorAll('.what-i-do-section, .training-info, .pricing-container, .testimonial-section, .form-header, .form-container, .contact-details-header, .contact-details');
+    console.log('Sections to observe:', sections);
 
     // Function to apply fade-in effect on scroll using IntersectionObserver
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
+                console.log('Intersecting section:', entry.target);
                 entry.target.classList.add('slide-fade-in');
                 entry.target.classList.remove('slide-fade-out');
-                console.log('slide-fade-in class added to', entry.target.classList);
             } else {
+                console.log('Not intersecting section:', entry.target);
                 entry.target.classList.remove('slide-fade-in');
                 entry.target.classList.add('slide-fade-out');
-                console.log('slide-fade-out class added to', entry.target.classList);
             }
         });
     }, { threshold: 0.1 }); // Adjust the threshold as needed
@@ -23,6 +24,7 @@ window.addEventListener('load', () => {
     sections.forEach(section => {
         if (section) {
             observer.observe(section);
+            console.log('Observing section:', section);
         }
     });
 
@@ -31,6 +33,7 @@ window.addEventListener('load', () => {
     navLinks.forEach(link => {
         link.addEventListener('click', (event) => {
             event.preventDefault(); // Prevent default navigation initially
+            console.log('Navigation link clicked:', link);
             applyFadeOutEffect(link);
         });
     });
@@ -72,6 +75,7 @@ window.addEventListener('load', () => {
 
     // Also handle scroll event for normal scrolling behavior
     window.addEventListener('scroll', () => {
+        console.log('Scroll event detected');
         handleScrollTransitions();
     });
 });
@@ -79,49 +83,35 @@ window.addEventListener('load', () => {
 // Function to handle swipe down
 const handleSwipeDown = () => {
     console.log('Handling swipe down...');
-    const currentSection = document.querySelector('.what-i-do-section.slide-fade-in'); // Get currently visible section
-    const nextSection = document.querySelector('.about-container'); // Specify the section to show next
-
-    if (currentSection && nextSection) {
-        currentSection.classList.remove('slide-fade-in'); // Remove from current
-        currentSection.classList.add('slide-fade-out'); // Add fade out to current
-
-        // Delay adding the fade-in class to the next section to allow for transition
-        setTimeout(() => {
-            nextSection.classList.remove('slide-fade-out'); // Ensure it starts hidden
-            nextSection.classList.add('slide-fade-in'); // Add fade-in to next
-        }, 300); // Adjust this delay to match your fade-out animation time
-    }
+    const sections = document.querySelectorAll('.what-i-do-section, .training-info, .pricing-container, .testimonial-section, .form-header, .form-container, .contact-details-header, .contact-details');
+    sections.forEach(section => {
+        section.classList.remove('slide-fade-in');
+        section.classList.add('slide-fade-out');
+        console.log('slide-fade-out class added to', section);
+    });
 };
 
 // Function to handle swipe up
 const handleSwipeUp = () => {
     console.log('Handling swipe up...');
-    const currentSection = document.querySelector('.what-i-do-section.slide-fade-in'); // Get currently visible section
-    const previousSection = document.querySelector('.previous-section'); // Specify the section to show next
-
-    if (currentSection && previousSection) {
-        currentSection.classList.remove('slide-fade-in'); // Remove from current
-        currentSection.classList.add('slide-fade-out'); // Add fade out to current
-
-        // Delay adding the fade-in class to the previous section to allow for transition
-        setTimeout(() => {
-            previousSection.classList.remove('slide-fade-out'); // Ensure it starts hidden
-            previousSection.classList.add('slide-fade-in'); // Add fade-in to previous
-        }, 300); // Adjust this delay to match your fade-out animation time
-    }
+    const sections = document.querySelectorAll('.what-i-do-section, .training-info, .pricing-container, .testimonial-section, .form-header, .form-container, .contact-details-header, .contact-details');
+    sections.forEach(section => {
+        section.classList.remove('slide-fade-out');
+        section.classList.add('slide-fade-in');
+        console.log('slide-fade-in class added to', section);
+    });
 };
 
 // Function to handle fade-out effect when navigating away
 const applyFadeOutEffect = (link) => {
-    console.log('Applying fade-out effect for navigation...');
+    console.log('Applying fade-out effect for navigation to:', link.href);
     const sections = document.querySelectorAll('.what-i-do-section, .training-info, .pricing-container, .testimonial-section, .form-header, .form-container, .contact-details-header, .contact-details');
 
     // Remove fade-in and apply fade-out to all sections
     sections.forEach(section => {
         section.classList.remove('slide-fade-in');
         section.classList.add('slide-fade-out');
-        console.log('slide-fade-out class added to', section.classList);
+        console.log('slide-fade-out class added to', section);
     });
 
     // Wait for the animation to finish before navigating
@@ -152,10 +142,12 @@ const handleScrollTransitions = () => {
 // Utility function to check if element is in viewport
 const isElementInViewport = (el) => {
     const rect = el.getBoundingClientRect();
-    return (
+    const inViewport = (
         rect.top >= 0 &&
         rect.left >= 0 &&
         rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
         rect.right <= (window.innerWidth || document.documentElement.clientWidth)
     );
+    console.log(`Element ${el.classList} in viewport: ${inViewport}`); // Log the check result
+    return inViewport;
 };
