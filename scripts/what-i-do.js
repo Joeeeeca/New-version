@@ -44,14 +44,12 @@ window.addEventListener('load', () => {
 
     // Handle touchstart event
     window.addEventListener('touchstart', (event) => {
-        console.log('Touch started at:', event.touches[0].clientY); // Log touch start with Y position
         isTouching = true;
         startY = event.touches[0].clientY; // Store initial Y position
     });
 
     // Handle touchend event
     window.addEventListener('touchend', (event) => {
-        console.log('Touch ended'); // Log touch end
         isTouching = false;
     });
 
@@ -63,26 +61,14 @@ window.addEventListener('load', () => {
         const swipeDistance = currentY - startY; // Calculate distance swiped
         console.log('Touch moving:', currentY, 'Swipe Distance:', swipeDistance); // Log current Y and swipe distance
 
-        // Log swipe direction
-        if (swipeDistance > 20) {
-            console.log('Swiped down:', swipeDistance);
-            handleSwipeDown();
-        } else if (swipeDistance < -20) {
-            console.log('Swiped up:', swipeDistance);
-            handleSwipeUp();
-        }
-    });
-
     // Also handle scroll event for normal scrolling behavior
     window.addEventListener('scroll', () => {
-        console.log('Scroll event detected');
         handleScrollTransitions();
     });
 });
 
 // Function to handle swipe down
 const handleSwipeDown = () => {
-    console.log('Handling swipe down...');
     const sections = document.querySelectorAll('.what-i-do-section, .training-info, .pricing-container, .testimonial-section, .form-header, .form-container, .contact-details-header, .contact-details');
     sections.forEach(section => {
         section.classList.remove('slide-fade-in');
@@ -150,4 +136,5 @@ const isElementInViewport = (el) => {
     );
     console.log(`Element ${el.classList} in viewport: ${inViewport}`); // Log the check result
     return inViewport;
-};
+}
+});
