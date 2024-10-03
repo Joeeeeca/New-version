@@ -114,7 +114,6 @@ info@simoncapon.co.uk
 </div>
     <script src="script.js"></script>
     <script src="scripts/tab-navigation.js"></script>
-        <script src="scripts/what-i-do.js"></script>
 </body>
 </html>
 <script>
@@ -137,6 +136,50 @@ info@simoncapon.co.uk
        // Update the size display when the window is resized
        window.addEventListener('resize', updateSize);
    };
+
+   window.addEventListener('load', () => {
+            const sections = document.querySelectorAll('section');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('fade-in');
+                        entry.target.classList.remove('fade-out');
+                    } else {
+                        entry.target.classList.remove('fade-in');
+                        entry.target.classList.add('fade-out');
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            sections.forEach(section => {
+                observer.observe(section);
+            });
+
+            // Touch handling for swiping
+            let isTouching = false;
+            let startY = 0;
+
+            window.addEventListener('touchstart', (event) => {
+                isTouching = true;
+                startY = event.touches[0].clientY;
+            });
+
+            window.addEventListener('touchend', () => {
+                isTouching = false;
+            });
+
+            window.addEventListener('touchmove', (event) => {
+                if (!isTouching) return;
+                const currentY = event.touches[0].clientY;
+                const swipeDistance = currentY - startY;
+
+                if (swipeDistance > 50) {
+                    console.log('Swiped down');
+                } else if (swipeDistance < -50) {
+                    console.log('Swiped up');
+                }
+            });
+        });
 
 
    
