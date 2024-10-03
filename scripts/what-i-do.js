@@ -41,13 +41,13 @@ window.addEventListener('load', () => {
 
     // Handle touchstart event
     window.addEventListener('touchstart', (event) => {
-        console.log('Touch started'); // Log touch start
+        console.log('Touch started', event.touches[0].clientY); // Log touch start with Y position
         isTouching = true;
         startY = event.touches[0].clientY; // Store initial Y position
     });
 
     // Handle touchend event
-    window.addEventListener('touchend', () => {
+    window.addEventListener('touchend', (event) => {
         console.log('Touch ended'); // Log touch end
         isTouching = false;
         handleScrollTransitions();
@@ -59,6 +59,7 @@ window.addEventListener('load', () => {
         
         const currentY = event.touches[0].clientY; // Get current Y position
         const swipeDistance = currentY - startY; // Calculate distance swiped
+        console.log('Touch moving:', currentY, 'Swipe Distance:', swipeDistance); // Log current Y and swipe distance
 
         // Log swipe direction
         if (swipeDistance > 20) {
