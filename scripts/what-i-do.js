@@ -1,5 +1,5 @@
-document.addEventListener('DOMContentLoaded', () => {
-    console.log('DOM fully loaded and parsed for What I Do page');
+window.addEventListener('load', () => {
+    console.log('Window fully loaded for What I Do page');
 
     // Handle fade-in effect for what-i-do-section when the page loads
     const whatIDoSection = document.querySelector('.what-i-do-section');
