@@ -37,11 +37,13 @@ window.addEventListener('load', () => {
 
     // Set up flags for touch and scroll events
     let isTouching = false;
+    let startY = 0; // To track the initial Y position
 
     // Handle touchstart event
-    window.addEventListener('touchstart', () => {
+    window.addEventListener('touchstart', (event) => {
         console.log('Touch started'); // Log touch start
         isTouching = true;
+        startY = event.touches[0].clientY; // Store initial Y position
     });
 
     // Handle touchend event
@@ -53,8 +55,18 @@ window.addEventListener('load', () => {
 
     // Handle touchmove event for touch screens
     window.addEventListener('touchmove', (event) => {
-        console.log('Touch moving'); // Log touch move
         if (!isTouching) return; // Only run if touch is ongoing
+        
+        const currentY = event.touches[0].clientY; // Get current Y position
+        const swipeDistance = currentY - startY; // Calculate distance swiped
+
+        // Log swipe direction
+        if (swipeDistance > 20) {
+            console.log('Swiped down:', swipeDistance);
+        } else if (swipeDistance < -20) {
+            console.log('Swiped up:', swipeDistance);
+        }
+
         handleScrollTransitions();
     });
 
