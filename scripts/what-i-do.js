@@ -59,7 +59,6 @@ window.addEventListener('load', () => {
 
         const currentY = event.touches[0].clientY; // Get current Y position
         const swipeDistance = currentY - startY; // Calculate distance swiped
-        console.log('Touch moving:', currentY, 'Swipe Distance:', swipeDistance); // Log current Y and swipe distance
 
     // Also handle scroll event for normal scrolling behavior
     window.addEventListener('scroll', () => {
