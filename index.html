@@ -113,28 +113,11 @@ info@simoncapon.co.uk
 </div>
 </div>
     <script src="script.js"></script>
+
 </body>
 </html>
 <script>
-    // Ensure that the script runs only after the page has loaded
-   window.onload = function() {
-       // Select the div element
-       const sizeChecker = document.getElementById('size-checker');
-   
-       // Function to update the width and height display
-       function updateSize() {
-           const width = window.innerWidth; // Get the current screen width
-           const height = window.innerHeight; // Get the current screen height
-           console.log(`Calculated width: ${width}px, height: ${height}px`); // Log the calculated width and height to the console
-           sizeChecker.innerText = `Width: ${width}px, Height: ${height}px`; // Update the div's text
-       }
-   
-       // Update the size display when the page loads
-       updateSize();
-   
-       // Update the size display when the window is resized
-       window.addEventListener('resize', updateSize);
-   };
+  
 
    window.addEventListener('load', () => {
             const sections = document.querySelectorAll('section');
