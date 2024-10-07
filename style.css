@@ -259,7 +259,8 @@ h2 {
     flex-direction: column;
     align-items: center;
     border-radius: 20px;
-   display:none;
+       opacity: 0;
+    transition: opacity 0.5s ease-in-out; /* Adjust timing as needed */
 }
 
 .about-me-content {
