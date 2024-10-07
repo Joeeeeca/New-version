@@ -27,7 +27,7 @@ html, body {
     height: 100%;
     font-family: Arial, sans-serif;
     scroll-snap-type: y mandatory;
-    overflow-X: hidden;
+    overflow: hidden;
     scroll-behavior: smooth;
 }
 
@@ -37,7 +37,7 @@ html {
 
 body {
   background-color: var(--color-4);
-  overflow-x:hidden;
+  overflow:hidden;
 }
 
 
