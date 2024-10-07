@@ -37,15 +37,9 @@ html {
 
 body {
   background-color: var(--color-4);
-  overflow-x:hidden;
-  overflow-y:auto;
-  scrollbar-width: none;
+  overflow:hidden;
 }
 
-/* For WebKit browsers (Chrome, Safari, etc.) */
-body::-webkit-scrollbar {
-    display: none;
-  }
 
 #size-checker {
     position: fixed;
@@ -69,7 +63,6 @@ body::-webkit-scrollbar {
     display: flex;
     flex-direction: column;
     background: linear-gradient(135deg, #000000, #434343);
-  touch-action: pan-y;
 }
 
 /* Container Styling */
