@@ -4,10 +4,16 @@ let touchEndY = 0;   // Store ending Y position for swipe
 
 document.addEventListener('DOMContentLoaded', () => {
     // Handle fade-in effect when page loads
-    const content = document.querySelector('.landing');
-    if (content) {
-        content.classList.add('slide-fade-out', 'slide-fade-in');
-        console.log('Fade-in class added to content:', content);
+    const aboutContainer = document.querySelector('.about-container');
+    if (aboutContainer) {
+        aboutContainer.classList.add('slide-fade-out'); // Apply slide-fade-out immediately
+        console.log('Fade-out class added to about container:', aboutContainer);
+        
+        // Fade-in effect after a short delay
+        setTimeout(() => {
+            aboutContainer.classList.remove('slide-fade-out');
+            aboutContainer.classList.add('slide-fade-in');
+        }, 1000); // Adjust the timing as needed
     }
 
     // Handle fade-out effect when navigating away
@@ -30,18 +36,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Apply fade-out effect to current section
 const applyFadeOutEffect = (callback) => {
-    const currentSection = document.querySelector('.landing');
     const aboutContainer = document.querySelector('.about-container');
     
-    if (currentSection) {
-        currentSection.classList.remove('slide-fade-in');
-        currentSection.classList.add('slide-fade-out');
-    }
-    
-    // Ensure that the fade-out is only applied if we're not already in the 'about' section
-    if (aboutContainer && currentSection.id !== 'about') {
-        aboutContainer.classList.remove('slide-fade-in');
-        aboutContainer.classList.add('slide-fade-out');
+    if (aboutContainer) {
+        aboutContainer.classList.remove('slide-fade-in'); // Remove fade-in class
+        aboutContainer.classList.add('slide-fade-out'); // Add fade-out class
     }
 
     // Log when fade-out animation is complete
@@ -67,19 +66,11 @@ const handleSectionTransition = (direction) => {
                     targetSection.classList.add('active');
                     console.log("Updated active section class");
 
-                    // Fade-in effect for about section
-                    if (targetSection.id === 'about') {
-                        const aboutContainer = document.querySelector('.about-container');
-                        if (aboutContainer) {
-                            aboutContainer.classList.remove('slide-fade-out');
-                            aboutContainer.classList.add('slide-fade-in');
-                        }
-                    } else {
-                        const landingContent = document.querySelector('.landing');
-                        if (landingContent) {
-                            landingContent.classList.remove('slide-fade-out');
-                            landingContent.classList.add('slide-fade-in');
-                        }
+                    // Fade-in effect for the target section
+                    const targetAboutContainer = document.querySelector('.about-container');
+                    if (targetAboutContainer) {
+                        targetAboutContainer.classList.remove('slide-fade-out');
+                        targetAboutContainer.classList.add('slide-fade-in');
                     }
                 }, 1000); // Adjust this delay if needed
             } else {
@@ -121,13 +112,7 @@ const handleNavigationClick = (event) => {
                             aboutContainer.classList.remove('slide-fade-out');
                             aboutContainer.classList.add('slide-fade-in');
                         }
-                    } else {
-                        const landingContent = document.querySelector('.landing');
-                        if (landingContent) {
-                            landingContent.classList.remove('slide-fade-out');
-                            landingContent.classList.add('slide-fade-in');
-                        }
-                    }
+                    } 
                 }, 1000); // Adjust this delay if needed
             });
         } else {
