@@ -67,8 +67,9 @@ const handleSectionTransition = (direction) => {
                         const targetAboutContainer = document.querySelector('.about-container');
                         if (targetAboutContainer) {
                             targetAboutContainer.style.display = 'block'; // Show the about container
-                            targetAboutContainer.classList.remove('slide-fade-out');
+                            targetAboutContainer.classList.remove('slide-fade-out'); // Remove fade-out class
                             targetAboutContainer.classList.add('slide-fade-in'); // Add fade-in class
+                            console.log('Fade-in class added to about container');
                         }
                     }
                 }, 1000); // Adjust this delay if needed
@@ -79,7 +80,7 @@ const handleSectionTransition = (direction) => {
     } else {
         console.log("No current section with 'active' class");
     }
-}
+};
 
 // Functions to scroll to the next or previous section
 const scrollToNextSection = () => handleSectionTransition('next');
@@ -110,7 +111,7 @@ const handleNavigationClick = (event) => {
                         if (aboutContainer) {
                             aboutContainer.style.display = 'block'; // Show the about container
                             aboutContainer.classList.remove('slide-fade-out');
-                            aboutContainer.classList.add('slide-fade-in'); // Add fade-in class
+                            aboutContainer.classList.add('slide-fade-in');
                         }
                     }
                 }, 1000); // Adjust this delay if needed
@@ -165,3 +166,23 @@ document.addEventListener('wheel', (event) => {
         }, 1000); // Adjust the delay as needed
     }
 });
+
+// Event listener for touch events to handle swipe down
+document.addEventListener('touchstart', (event) => {
+    touchStartY = event.changedTouches[0].screenY;
+});
+
+document.addEventListener('touchend', (event) => {
+    touchEndY = event.changedTouches[0].screenY;
+    handleSwipe();
+});
+
+const handleSwipe = () => {
+    if (touchEndY < touchStartY) { // Swipe down
+        console.log("Swipe down detected");
+        scrollToNextSection();
+    } else if (touchEndY > touchStartY) { // Swipe up
+        console.log("Swipe up detected");
+        scrollToPreviousSection();
+    }
+};
