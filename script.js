@@ -7,15 +7,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const aboutContainer = document.querySelector('.about-container');
     if (aboutContainer) {
         aboutContainer.style.display = 'none'; // Hide initially
-        aboutContainer.classList.add('slide-fade-out'); // Apply slide-fade-out immediately
+        aboutContainer.classList.add('slide-fade-out'); // Apply slide-fade-out initially
         console.log('Fade-out class added to about container:', aboutContainer);
-        
-        // Fade-in effect after a short delay
-        setTimeout(() => {
-            aboutContainer.style.display = 'block'; // Show the about container
-            aboutContainer.classList.remove('slide-fade-out');
-            aboutContainer.classList.add('slide-fade-in');
-        }, 1000); // Adjust the timing as needed
     }
 
     // Handle fade-out effect when navigating away
@@ -39,7 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
 // Apply fade-out effect to current section
 const applyFadeOutEffect = (callback) => {
     const aboutContainer = document.querySelector('.about-container');
-    
+
     if (aboutContainer) {
         aboutContainer.classList.remove('slide-fade-in'); // Remove fade-in class
         aboutContainer.classList.add('slide-fade-out'); // Add fade-out class
@@ -117,7 +110,7 @@ const handleNavigationClick = (event) => {
                             aboutContainer.classList.remove('slide-fade-out');
                             aboutContainer.classList.add('slide-fade-in');
                         }
-                    } 
+                    }
                 }, 1000); // Adjust this delay if needed
             });
         } else {
