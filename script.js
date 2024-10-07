@@ -38,6 +38,7 @@ const applyFadeOutEffect = (callback) => {
         currentSection.classList.add('slide-fade-out');
     }
     
+    // Ensure that the fade-out is only applied if we're not already in the 'about' section
     if (aboutContainer && currentSection.id !== 'about') {
         aboutContainer.classList.remove('slide-fade-in');
         aboutContainer.classList.add('slide-fade-out');
@@ -66,7 +67,7 @@ const handleSectionTransition = (direction) => {
                     targetSection.classList.add('active');
                     console.log("Updated active section class");
 
-                    // Apply fade-in effect to new section
+                    // Fade-in effect for about section
                     if (targetSection.id === 'about') {
                         const aboutContainer = document.querySelector('.about-container');
                         if (aboutContainer) {
