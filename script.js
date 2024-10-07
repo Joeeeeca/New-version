@@ -164,32 +164,4 @@ document.addEventListener('wheel', (event) => {
     }
 });
 
-// Touch event listeners for swipe detection
-document.addEventListener('touchstart', (event) => {
-    touchStartY = event.touches[0].clientY; // Get the starting Y position
-}, { passive: true });
 
-document.addEventListener('touchend', (event) => {
-    touchEndY = event.changedTouches[0].clientY; // Get the ending Y position
-    handleSwipe(); // Handle the swipe direction
-});
-
-// Handle swipe direction
-const handleSwipe = () => {
-    const threshold = 50; // Minimum distance for a valid swipe
-    const swipeDistance = touchEndY - touchStartY;
-
-    if (swipeDistance > threshold) {
-        console.log("Swipe down detected");
-        const aboutContainer = document.querySelector('.about-container');
-        if (aboutContainer) {
-            aboutContainer.style.display = 'block'; // Show the about container
-            aboutContainer.classList.remove('slide-fade-out'); // Remove fade-out class
-            aboutContainer.classList.add('slide-fade-in'); // Add fade-in class
-        }
-        scrollToPreviousSection(); // Scroll up on swipe down
-    } else if (swipeDistance < -threshold) {
-        console.log("Swipe up detected");
-        scrollToNextSection(); // Scroll down on swipe up
-    }
-};
