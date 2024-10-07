@@ -63,11 +63,13 @@ const handleSectionTransition = (direction) => {
                     console.log("Updated active section class");
 
                     // Fade-in effect for the target section
-                    const targetAboutContainer = document.querySelector('.about-container');
-                    if (targetAboutContainer) {
-                        targetAboutContainer.style.display = 'block'; // Show the about container
-                        targetAboutContainer.classList.remove('slide-fade-out');
-                        targetAboutContainer.classList.add('slide-fade-in');
+                    if (targetSection.id === 'about') { // Check if the target section is 'about'
+                        const targetAboutContainer = document.querySelector('.about-container');
+                        if (targetAboutContainer) {
+                            targetAboutContainer.style.display = 'block'; // Show the about container
+                            targetAboutContainer.classList.remove('slide-fade-out');
+                            targetAboutContainer.classList.add('slide-fade-in'); // Add fade-in class
+                        }
                     }
                 }, 1000); // Adjust this delay if needed
             } else {
@@ -108,7 +110,7 @@ const handleNavigationClick = (event) => {
                         if (aboutContainer) {
                             aboutContainer.style.display = 'block'; // Show the about container
                             aboutContainer.classList.remove('slide-fade-out');
-                            aboutContainer.classList.add('slide-fade-in');
+                            aboutContainer.classList.add('slide-fade-in'); // Add fade-in class
                         }
                     }
                 }, 1000); // Adjust this delay if needed
@@ -163,5 +165,3 @@ document.addEventListener('wheel', (event) => {
         }, 1000); // Adjust the delay as needed
     }
 });
-
-
