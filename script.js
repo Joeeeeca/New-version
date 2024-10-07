@@ -35,7 +35,7 @@ const applyFadeOutEffect = (callback) => {
 
     if (aboutContainer) {
         aboutContainer.classList.remove('slide-fade-in'); // Remove fade-in class
-        aboutContainer.classList.add('slide-fade-out'); // Add fade-out class
+
     }
 
     // Log when fade-out animation is complete
