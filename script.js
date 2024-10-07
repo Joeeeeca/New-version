@@ -6,11 +6,13 @@ document.addEventListener('DOMContentLoaded', () => {
     // Handle fade-in effect when page loads
     const aboutContainer = document.querySelector('.about-container');
     if (aboutContainer) {
+        aboutContainer.style.display = 'none'; // Hide initially
         aboutContainer.classList.add('slide-fade-out'); // Apply slide-fade-out immediately
         console.log('Fade-out class added to about container:', aboutContainer);
         
         // Fade-in effect after a short delay
         setTimeout(() => {
+            aboutContainer.style.display = 'block'; // Show the about container
             aboutContainer.classList.remove('slide-fade-out');
             aboutContainer.classList.add('slide-fade-in');
         }, 1000); // Adjust the timing as needed
@@ -46,6 +48,7 @@ const applyFadeOutEffect = (callback) => {
     // Log when fade-out animation is complete
     setTimeout(() => {
         console.log('Fade-out animation complete');
+        aboutContainer.style.display = 'none'; // Hide after fade-out
         callback();
     }, 1000); // Match the duration of the fade-out animation
 };
@@ -69,6 +72,7 @@ const handleSectionTransition = (direction) => {
                     // Fade-in effect for the target section
                     const targetAboutContainer = document.querySelector('.about-container');
                     if (targetAboutContainer) {
+                        targetAboutContainer.style.display = 'block'; // Show the about container
                         targetAboutContainer.classList.remove('slide-fade-out');
                         targetAboutContainer.classList.add('slide-fade-in');
                     }
@@ -109,6 +113,7 @@ const handleNavigationClick = (event) => {
                     if (targetSection.id === 'about') {
                         const aboutContainer = document.querySelector('.about-container');
                         if (aboutContainer) {
+                            aboutContainer.style.display = 'block'; // Show the about container
                             aboutContainer.classList.remove('slide-fade-out');
                             aboutContainer.classList.add('slide-fade-in');
                         }
@@ -183,6 +188,12 @@ const handleSwipe = () => {
 
     if (swipeDistance > threshold) {
         console.log("Swipe down detected");
+        const aboutContainer = document.querySelector('.about-container');
+        if (aboutContainer) {
+            aboutContainer.style.display = 'block'; // Show the about container
+            aboutContainer.classList.remove('slide-fade-out'); // Remove fade-out class
+            aboutContainer.classList.add('slide-fade-in'); // Add fade-in class
+        }
         scrollToPreviousSection(); // Scroll up on swipe down
     } else if (swipeDistance < -threshold) {
         console.log("Swipe up detected");
