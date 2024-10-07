@@ -4,11 +4,10 @@ let touchEndY = 0;   // Store ending Y position for swipe
 
 document.addEventListener('DOMContentLoaded', () => {
     // Handle fade-in effect when page loads
-    const aboutContainer = document.querySelector('.about-container');
-    if (aboutContainer) {
-        aboutContainer.style.display = 'none'; // Hide initially
-        aboutContainer.classList.add('slide-fade-out'); // Apply slide-fade-out initially
-        console.log('Fade-out class added to about container:', aboutContainer);
+    const content = document.querySelector('.landing');
+    if (content) {
+        content.classList.add('slide-fade-out', 'slide-fade-in');
+        console.log('Fade-in class added to content:', content);
     }
 
     // Handle fade-out effect when navigating away
@@ -31,56 +30,61 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Apply fade-out effect to current section
 const applyFadeOutEffect = (callback) => {
+    const currentSection = document.querySelector('.landing');
     const aboutContainer = document.querySelector('.about-container');
-
-    if (aboutContainer) {
-        aboutContainer.classList.remove('slide-fade-in'); // Remove fade-in class
-
+    
+    if (currentSection) {
+        currentSection.classList.remove('slide-fade-in');
+        currentSection.classList.add('slide-fade-out');
+    }
+    
+    if (aboutContainer && currentSection.id !== 'about') {
+        aboutContainer.classList.remove('slide-fade-in');
+        aboutContainer.classList.add('slide-fade-out');
     }
 
     // Log when fade-out animation is complete
     setTimeout(() => {
         console.log('Fade-out animation complete');
-        aboutContainer.style.display = 'none'; // Hide after fade-out
         callback();
     }, 1000); // Match the duration of the fade-out animation
 };
 
 // Function to handle section transitions
 const handleSectionTransition = (direction) => {
-    console.log(`${direction} section function called`);
     const currentSection = document.querySelector('.section.active');
     if (currentSection) {
         console.log("Current section found:", currentSection);
         applyFadeOutEffect(() => {
             const targetSection = direction === 'next' ? currentSection.nextElementSibling : currentSection.previousElementSibling;
             if (targetSection && targetSection.classList.contains('section')) {
-                console.log(`${direction.charAt(0).toUpperCase() + direction.slice(1)} section found:`, targetSection);
                 setTimeout(() => {
                     targetSection.scrollIntoView({ behavior: 'smooth' });
                     currentSection.classList.remove('active');
                     targetSection.classList.add('active');
                     console.log("Updated active section class");
 
-                    // Fade-in effect for the target section
-                    if (targetSection.id === 'about') { // Check if the target section is 'about'
-                        const targetAboutContainer = document.querySelector('.about-container');
-                        if (targetAboutContainer) {
-                            targetAboutContainer.style.display = 'block'; // Show the about container
-                            targetAboutContainer.classList.remove('slide-fade-out'); // Remove fade-out class
-                            targetAboutContainer.classList.add('slide-fade-in'); // Add fade-in class
-                            console.log('Fade-in class added to about container');
+                    // Apply fade-in effect to new section
+                    if (targetSection.id === 'about') {
+                        const aboutContainer = document.querySelector('.about-container');
+                        if (aboutContainer) {
+                            aboutContainer.classList.remove('slide-fade-out');
+                            aboutContainer.classList.add('slide-fade-in');
+                        }
+                    } else {
+                        const landingContent = document.querySelector('.landing');
+                        if (landingContent) {
+                            landingContent.classList.remove('slide-fade-out');
+                            landingContent.classList.add('slide-fade-in');
                         }
                     }
                 }, 1000); // Adjust this delay if needed
-            } else {
-                console.log(`No ${direction} section found or ${direction} element is not a section`);
-            }
+            } 
         });
     } else {
         console.log("No current section with 'active' class");
     }
-};
+}
 
 // Functions to scroll to the next or previous section
 const scrollToNextSection = () => handleSectionTransition('next');
@@ -109,9 +113,14 @@ const handleNavigationClick = (event) => {
                     if (targetSection.id === 'about') {
                         const aboutContainer = document.querySelector('.about-container');
                         if (aboutContainer) {
-                            aboutContainer.style.display = 'block'; // Show the about container
                             aboutContainer.classList.remove('slide-fade-out');
                             aboutContainer.classList.add('slide-fade-in');
+                        }
+                    } else {
+                        const landingContent = document.querySelector('.landing');
+                        if (landingContent) {
+                            landingContent.classList.remove('slide-fade-out');
+                            landingContent.classList.add('slide-fade-in');
                         }
                     }
                 }, 1000); // Adjust this delay if needed
@@ -167,22 +176,26 @@ document.addEventListener('wheel', (event) => {
     }
 });
 
-// Event listener for touch events to handle swipe down
+// Touch event listeners for swipe detection
 document.addEventListener('touchstart', (event) => {
-    touchStartY = event.changedTouches[0].screenY;
-});
+    touchStartY = event.touches[0].clientY; // Get the starting Y position
+}, { passive: true });
 
 document.addEventListener('touchend', (event) => {
-    touchEndY = event.changedTouches[0].screenY;
-    handleSwipe();
+    touchEndY = event.changedTouches[0].clientY; // Get the ending Y position
+    handleSwipe(); // Handle the swipe direction
 });
 
+// Handle swipe direction
 const handleSwipe = () => {
-    if (touchEndY < touchStartY) { // Swipe down
+    const threshold = 50; // Minimum distance for a valid swipe
+    const swipeDistance = touchEndY - touchStartY;
+
+    if (swipeDistance > threshold) {
         console.log("Swipe down detected");
-        scrollToNextSection();
-    } else if (touchEndY > touchStartY) { // Swipe up
+        scrollToPreviousSection(); // Scroll up on swipe down
+    } else if (swipeDistance < -threshold) {
         console.log("Swipe up detected");
-        scrollToPreviousSection();
+        scrollToNextSection(); // Scroll down on swipe up
     }
 };
