@@ -57,7 +57,10 @@ const applyFadeOutEffect = (callback) => {
     setTimeout(() => {
         console.log('Fade-out animation complete');
         if (aboutContainer) aboutContainer.style.display = 'none'; // Hide after fade-out
-        if (landingSection) landingSection.classList.add('hidden'); // Hide landing after fade-out
+        if (landingSection) {
+            landingSection.classList.remove('slide-fade-in'); // Ensure fade-in class is removed
+            landingSection.classList.add('hidden'); // Hide landing after fade-out
+        }
         callback();
     }, 1000); // Match the duration of the fade-out animation
 };
@@ -91,8 +94,8 @@ const handleSectionTransition = (direction) => {
                         console.log('Home section detected'); // Added log to verify section is home
                         const targetLanding = document.querySelector('.landing');
                         if (targetLanding) {
-                            targetLanding.classList.remove('slide-fade-out');
-                            targetLanding.classList.add('slide-fade-in');
+                            targetLanding.classList.remove('slide-fade-out'); // Remove fade-out class
+                            targetLanding.classList.add('slide-fade-in'); // Add fade-in class
                             console.log('Fade-in class added to landing section');
                         } else {
                             console.log('Landing section not found'); // Added log to handle missing landing
@@ -222,3 +225,4 @@ const handleSwipe = () => {
         scrollToPreviousSection();
     }
 };
+
