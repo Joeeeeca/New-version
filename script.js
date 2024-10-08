@@ -88,11 +88,14 @@ const handleSectionTransition = (direction) => {
                             console.log('Fade-in class added to about container');
                         }
                     } else if (targetSection.id === 'home') {
+                        console.log('Home section detected'); // Added log to verify section is home
                         const targetLanding = document.querySelector('.landing');
                         if (targetLanding) {
                             targetLanding.classList.remove('slide-fade-out');
                             targetLanding.classList.add('slide-fade-in');
                             console.log('Fade-in class added to landing section');
+                        } else {
+                            console.log('Landing section not found'); // Added log to handle missing landing
                         }
                     }
                 }, 1000); // Adjust this delay if needed
@@ -137,11 +140,14 @@ const handleNavigationClick = (event) => {
                             aboutContainer.classList.add('slide-fade-in');
                         }
                     } else if (targetSection.id === 'home') {
+                        console.log('Home section detected'); // Added log to verify section is home
                         const landingSection = document.querySelector('.landing');
                         if (landingSection) {
                             landingSection.classList.remove('slide-fade-out');
                             landingSection.classList.add('slide-fade-in');
                             console.log('Fade-in class added to landing section');
+                        } else {
+                            console.log('Landing section not found'); // Added log to handle missing landing
                         }
                     }
                 }, 1000); // Adjust this delay if needed
