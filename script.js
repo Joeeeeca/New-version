@@ -42,27 +42,30 @@ const applyFadeOutEffect = (callback) => {
     const landingSection = document.querySelector('.landing');
 
     // Fade out the landing section if it's active
-    if (landingSection && landingSection.classList.contains('active')) {
+    if (landingSection) {
         landingSection.classList.remove('slide-fade-in');
         landingSection.classList.add('slide-fade-out');
         console.log('Landing section is fading out');
+
+        // Log when fade-out animation is complete
+        landingSection.addEventListener('animationend', () => {
+            landingSection.classList.remove('slide-fade-out'); // Remove fade-out class
+            landingSection.style.display = 'none'; // Hide after fade-out
+            console.log('Landing section fade-out animation complete');
+            callback();
+        }, { once: true }); // Use once to ensure it only runs once
     }
 
     if (aboutContainer) {
         aboutContainer.classList.remove('slide-fade-in'); // Remove fade-in class
         aboutContainer.classList.add('slide-fade-out'); // Add fade-out class
-    }
 
-    // Log when fade-out animation is complete
-    setTimeout(() => {
-        console.log('Fade-out animation complete');
-        if (aboutContainer) aboutContainer.style.display = 'none'; // Hide after fade-out
-        if (landingSection) {
-            landingSection.classList.remove('slide-fade-in'); // Ensure fade-in class is removed
-            landingSection.classList.add('hidden'); // Hide landing after fade-out
-        }
-        callback();
-    }, 1000); // Match the duration of the fade-out animation
+        // Log when fade-out animation is complete for about container
+        aboutContainer.addEventListener('animationend', () => {
+            aboutContainer.style.display = 'none'; // Hide after fade-out
+            console.log('About container fade-out animation complete');
+        }, { once: true });
+    }
 };
 
 // Function to handle section transitions
@@ -225,4 +228,3 @@ const handleSwipe = () => {
         scrollToPreviousSection();
     }
 };
-
