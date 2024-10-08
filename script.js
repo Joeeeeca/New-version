@@ -43,8 +43,8 @@ const applyFadeOutEffect = (callback) => {
 
     // Fade out the landing section if it's active
     if (landingSection) {
-        landingSection.classList.remove('slide-fade-in');
-        landingSection.classList.add('slide-fade-out');
+        landingSection.classList.remove('slide-fade-in'); // Remove fade-in class
+        landingSection.classList.add('slide-fade-out'); // Add fade-out class
         console.log('Landing section is fading out');
 
         // Log when fade-out animation is complete
@@ -56,6 +56,7 @@ const applyFadeOutEffect = (callback) => {
         }, { once: true }); // Use once to ensure it only runs once
     }
 
+    // Handle about container fade-out similarly
     if (aboutContainer) {
         aboutContainer.classList.remove('slide-fade-in'); // Remove fade-in class
         aboutContainer.classList.add('slide-fade-out'); // Add fade-out class
@@ -79,9 +80,8 @@ const handleSectionTransition = (direction) => {
             if (targetSection && targetSection.classList.contains('section')) {
                 console.log(`${direction.charAt(0).toUpperCase() + direction.slice(1)} section found:`, targetSection);
                 setTimeout(() => {
-                    targetSection.scrollIntoView({ behavior: 'smooth' });
-                    currentSection.classList.remove('active');
-                    targetSection.classList.add('active');
+                    currentSection.classList.remove('active'); // Remove active class from current section
+                    targetSection.classList.add('active'); // Add active class to target section
                     console.log("Updated active section class");
 
                     // Fade-in effect for the target section
@@ -97,6 +97,7 @@ const handleSectionTransition = (direction) => {
                         console.log('Home section detected'); // Added log to verify section is home
                         const targetLanding = document.querySelector('.landing');
                         if (targetLanding) {
+                            targetLanding.style.display = 'block'; // Ensure landing section is visible
                             targetLanding.classList.remove('slide-fade-out'); // Remove fade-out class
                             targetLanding.classList.add('slide-fade-in'); // Add fade-in class
                             console.log('Fade-in class added to landing section');
@@ -149,6 +150,7 @@ const handleNavigationClick = (event) => {
                         console.log('Home section detected'); // Added log to verify section is home
                         const landingSection = document.querySelector('.landing');
                         if (landingSection) {
+                            landingSection.style.display = 'block'; // Ensure landing section is visible
                             landingSection.classList.remove('slide-fade-out');
                             landingSection.classList.add('slide-fade-in');
                             console.log('Fade-in class added to landing section');
@@ -211,15 +213,11 @@ document.addEventListener('wheel', (event) => {
 
 // Event listener for touch events to handle swipe down
 document.addEventListener('touchstart', (event) => {
-    touchStartY = event.changedTouches[0].screenY;
+    touchStartY = event.changedTouches[0].clientY; // Store starting Y position
 });
 
 document.addEventListener('touchend', (event) => {
-    touchEndY = event.changedTouches[0].screenY;
-    handleSwipe();
-});
-
-const handleSwipe = () => {
+    touchEndY = event.changedTouches[0].clientY; // Store ending Y position
     if (touchEndY < touchStartY) { // Swipe down
         console.log("Swipe down detected");
         scrollToNextSection();
@@ -227,4 +225,4 @@ const handleSwipe = () => {
         console.log("Swipe up detected");
         scrollToPreviousSection();
     }
-};
+});
