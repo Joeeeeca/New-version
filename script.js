@@ -5,10 +5,17 @@ let touchEndY = 0;   // Store ending Y position for swipe
 document.addEventListener('DOMContentLoaded', () => {
     // Handle fade-in effect when page loads
     const aboutContainer = document.querySelector('.about-container');
+    const landingSection = document.querySelector('.landing');
+
     if (aboutContainer) {
         aboutContainer.style.display = 'none'; // Hide initially
         aboutContainer.classList.add('slide-fade-out'); // Apply slide-fade-out initially
         console.log('Fade-out class added to about container:', aboutContainer);
+    }
+
+    if (landingSection) {
+        landingSection.classList.add('slide-fade-in'); // Ensure landing starts with fade-in
+        console.log('Fade-in class added to landing section:', landingSection);
     }
 
     // Handle fade-out effect when navigating away
@@ -32,6 +39,14 @@ document.addEventListener('DOMContentLoaded', () => {
 // Apply fade-out effect to current section
 const applyFadeOutEffect = (callback) => {
     const aboutContainer = document.querySelector('.about-container');
+    const landingSection = document.querySelector('.landing');
+
+    // Fade out the landing section if it's active
+    if (landingSection && landingSection.classList.contains('active')) {
+        landingSection.classList.remove('slide-fade-in');
+        landingSection.classList.add('slide-fade-out');
+        console.log('Landing section is fading out');
+    }
 
     if (aboutContainer) {
         aboutContainer.classList.remove('slide-fade-in'); // Remove fade-in class
@@ -41,7 +56,8 @@ const applyFadeOutEffect = (callback) => {
     // Log when fade-out animation is complete
     setTimeout(() => {
         console.log('Fade-out animation complete');
-        aboutContainer.style.display = 'none'; // Hide after fade-out
+        if (aboutContainer) aboutContainer.style.display = 'none'; // Hide after fade-out
+        if (landingSection) landingSection.classList.add('hidden'); // Hide landing after fade-out
         callback();
     }, 1000); // Match the duration of the fade-out animation
 };
@@ -70,6 +86,13 @@ const handleSectionTransition = (direction) => {
                             targetAboutContainer.classList.remove('slide-fade-out'); // Remove fade-out class
                             targetAboutContainer.classList.add('slide-fade-in'); // Add fade-in class
                             console.log('Fade-in class added to about container');
+                        }
+                    } else if (targetSection.id === 'home') {
+                        const targetLanding = document.querySelector('.landing');
+                        if (targetLanding) {
+                            targetLanding.classList.remove('slide-fade-out');
+                            targetLanding.classList.add('slide-fade-in');
+                            console.log('Fade-in class added to landing section');
                         }
                     }
                 }, 1000); // Adjust this delay if needed
@@ -112,6 +135,13 @@ const handleNavigationClick = (event) => {
                             aboutContainer.style.display = 'block'; // Show the about container
                             aboutContainer.classList.remove('slide-fade-out');
                             aboutContainer.classList.add('slide-fade-in');
+                        }
+                    } else if (targetSection.id === 'home') {
+                        const landingSection = document.querySelector('.landing');
+                        if (landingSection) {
+                            landingSection.classList.remove('slide-fade-out');
+                            landingSection.classList.add('slide-fade-in');
+                            console.log('Fade-in class added to landing section');
                         }
                     }
                 }, 1000); // Adjust this delay if needed
