@@ -218,11 +218,12 @@ document.addEventListener('touchstart', (event) => {
 
 document.addEventListener('touchend', (event) => {
     touchEndY = event.changedTouches[0].clientY; // Store ending Y position
-    if (touchEndY < touchStartY) { // Swipe down
-        console.log("Swipe down detected");
-        scrollToNextSection();
-    } else if (touchEndY > touchStartY) { // Swipe up
+    const touchDifference = touchStartY - touchEndY;
+    if (touchDifference > 50 && !isScrolling) { // Swipe up
         console.log("Swipe up detected");
+        scrollToNextSection();
+    } else if (touchDifference < -50 && !isScrolling) { // Swipe down
+        console.log("Swipe down detected");
         scrollToPreviousSection();
     }
 });
