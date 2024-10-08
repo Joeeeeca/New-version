@@ -1,135 +1,110 @@
-let isScrolling = false;
-let touchStartY = 0; // Store starting Y position for swipe
-let touchEndY = 0;   // Store ending Y position for swipe
+const links = document.querySelectorAll('.nav__link');
+const light = document.querySelector('.nav__light');
+let isTransitioning = false; // Flag to prevent double transitions
 
-document.addEventListener('DOMContentLoaded', () => {
-    // Handle fade-in effect when page loads
-    const aboutContainer = document.querySelector('.about-container');
-    const landingSection = document.querySelector('.landing');
+// Function to move the light to the selected link
+function moveLight(linkElement) {
+    const { offsetLeft, offsetWidth } = linkElement;
+    const newLeft = offsetLeft + (offsetWidth / 2) - (light.offsetWidth / 2);
+    console.log(`Moving light to: ${newLeft}px`); // Log the new position
+    light.style.left = `${newLeft}px`; // Move the light
+}
 
-    if (aboutContainer) {
-        aboutContainer.classList.add('slide-fade-out'); // Ensure slide-fade-out is applied initially
-    }
-
-    if (landingSection) {
-        landingSection.classList.add('slide-fade-in'); // Ensure landing starts with fade-in
-    }
-
-    // Handle fade-out effect when navigating away
-    const links = document.querySelectorAll('nav a');
+// Function to set the active link
+function setActiveLink(linkActive) {
+    console.log(`Setting active link: ${linkActive.textContent}`); // Log the active link
     links.forEach(link => {
-        link.addEventListener('click', (event) => {
-            // Prevent default link behavior
-            event.preventDefault();
-            const targetUrl = link.getAttribute('href');
+        link.classList.remove('active');
+    });
+    linkActive.classList.add('active');
+}
 
-            // Apply fade-out effect
-            applyFadeOutEffect(() => {
-                window.location.href = targetUrl;
-            });
+// Function to set the initial active link from local storage
+function setInitialActiveLink() {
+    const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+    const lastActiveLink = localStorage.getItem('activeLink') || currentPage;
+    console.log(`Current page: ${currentPage}`); // Log the current page
+    console.log(`Last active link: ${lastActiveLink}`); // Log the last active link
+
+    links.forEach(link => {
+        const linkHref = link.querySelector('a').getAttribute('href');
+
+        if (linkHref === lastActiveLink) {
+            setActiveLink(link);
+            moveLight(link); // Move the light to the last active link on page load
+            console.log(`Light positioned at: ${linkHref}`); // Log positioning on page load
+        }
+    });
+}
+
+// Set the initial active link on DOMContentLoaded
+document.addEventListener('DOMContentLoaded', () => {
+    console.log('Document loaded. Setting initial active link.'); // Log document load
+    setInitialActiveLink(); // Set the initial position of the light based on the last active link
+
+    links.forEach(link => {
+        link.addEventListener('click', event => {
+            event.preventDefault(); // Prevent immediate navigation
+            const targetLink = event.currentTarget;
+
+            // Check if already transitioning
+            if (isTransitioning) {
+                console.log('Transition already in progress.'); // Log if already transitioning
+                return; // Prevent additional transitions
+            }
+
+            // Store the active link in local storage
+            localStorage.setItem('activeLink', targetLink.querySelector('a').getAttribute('href'));
+            console.log(`Active link stored: ${targetLink.querySelector('a').getAttribute('href')}`); // Log stored active link
+
+            // Set transitioning flag
+            isTransitioning = true; 
+
+            // Move the light and set active link
+            setActiveLink(targetLink); // Activate the clicked link
+            moveLight(targetLink); // Move the light to the clicked link
+
+            // Use a timeout to navigate after a slight delay to allow the transition to complete
+            setTimeout(() => {
+                window.location.href = targetLink.querySelector('a').getAttribute('href');
+                console.log(`Navigating to: ${targetLink.querySelector('a').getAttribute('href')}`); // Log navigation
+                isTransitioning = false; // Reset the flag after navigation
+            }, 300); // Adjust this delay to match your desired transition timing
         });
     });
 });
 
-// Apply fade-out effect to current section
-const applyFadeOutEffect = (callback) => {
-    const aboutContainer = document.querySelector('.about-container');
-    const landingSection = document.querySelector('.landing');
-
-    // Apply fade-out for about container if it's currently faded in
-    if (aboutContainer && aboutContainer.classList.contains('slide-fade-in')) {
-        aboutContainer.classList.remove('slide-fade-in'); // Remove fade-in class
-        aboutContainer.classList.add('slide-fade-out'); // Add fade-out class
-
-        // Wait for the fade-out animation to complete
-        aboutContainer.addEventListener('animationend', () => {
-            callback(); // Proceed with the callback function
-        }, { once: true });
-    }
-
-    // Apply fade-out for landing section if transitioning to about
-    if (landingSection) {
-        landingSection.classList.remove('slide-fade-in'); // Remove fade-in class
-        landingSection.classList.add('slide-fade-out'); // Add fade-out class
-
-        // Wait for the fade-out animation to complete
-        landingSection.addEventListener('animationend', () => {
-            callback(); // Proceed with the callback function
-        }, { once: true });
-    }
-};
-
-// Function to handle section transitions
-const handleSectionTransition = (direction) => {
-    const currentSection = document.querySelector('.section.active');
-    const aboutContainer = document.querySelector('.about-container');
-    const landingSection = document.querySelector('.landing');
-
-    if (currentSection) {
-        applyFadeOutEffect(() => {
-            const targetSection = direction === 'next' ? currentSection.nextElementSibling : currentSection.previousElementSibling;
-            if (targetSection && targetSection.classList.contains('section')) {
-                setTimeout(() => {
-                    currentSection.classList.remove('active'); // Remove active class from current section
-                    targetSection.classList.add('active'); // Add active class to target section
-
-                    // If we are transitioning to the 'about' section
-                    if (targetSection.id === 'about') {
-                        if (aboutContainer) {
-                            aboutContainer.classList.remove('slide-fade-out'); // Ensure fade-out is removed
-                            aboutContainer.classList.add('slide-fade-in'); // Apply fade-in to about container
-                            aboutContainer.scrollIntoView({ behavior: 'smooth' }); // Scroll to about section
-                        }
-                    }
-                    // If transitioning to 'home' section
-                    else if (targetSection.id === 'home') {
-                        if (landingSection) {
-                            landingSection.classList.remove('slide-fade-out'); // Ensure fade-out is removed
-                            landingSection.classList.add('slide-fade-in'); // Apply fade-in to landing section
-                            landingSection.scrollIntoView({ behavior: 'smooth' }); // Scroll to landing section
-                        }
-                        // Ensure about-container fades out and stays that way
-                        if (aboutContainer) {
-                            aboutContainer.classList.remove('slide-fade-in'); // Remove slide-fade-in
-                            aboutContainer.classList.add('slide-fade-out'); // Add slide-fade-out
-                        }
-                    }
-                }, 1000); // Wait for fade-out animation to complete before transitioning
-            }
-        });
-    }
-};
-
-// Functions to scroll to the next or previous section
-const scrollToNextSection = () => handleSectionTransition('next');
-const scrollToPreviousSection = () => handleSectionTransition('previous');
-
-// Event listener for mouse scroll functionality
-document.addEventListener('wheel', (event) => {
-    if (!isScrolling) { // Throttle scrolling
-        isScrolling = true;
-        if (event.deltaY > 0) { // Scroll down
-            scrollToNextSection();
-        } else if (event.deltaY < 0) { // Scroll up
-            scrollToPreviousSection();
+// Directly set the light position on page load without transition
+window.addEventListener('load', () => {
+    console.log('Page loaded. Checking current active link.'); // Log page load
+    const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+    links.forEach(link => {
+        const linkHref = link.querySelector('a').getAttribute('href');
+        if (linkHref === currentPage) {
+            moveLight(link); // Move the light to the currently loaded page link
+            setActiveLink(link); // Set the active link
         }
-        setTimeout(() => {
-            isScrolling = false; // Reset flag after delay
-        }, 1000); // Adjust the delay as needed
+    });
+});
+
+// Observe the window resize event to adjust light position if necessary
+window.addEventListener('resize', () => {
+    const activeLink = document.querySelector('.nav__link.active');
+    if (activeLink) {
+        moveLight(activeLink); // Re-adjust the light position based on the active link
     }
 });
 
-// Event listener for touch events to handle swipe down
-document.addEventListener('touchstart', (event) => {
-    touchStartY = event.changedTouches[0].clientY; // Store starting Y position
-});
+// Function to adjust light position for smaller screens
+function adjustLightPosition(linkElement) {
+    const { offsetLeft, offsetWidth } = linkElement;
+    light.style.left = `${offsetLeft + (offsetWidth / 2) - (light.offsetWidth / 2)}px`;
+}
 
-document.addEventListener('touchend', (event) => {
-    touchEndY = event.changedTouches[0].clientY; // Store ending Y position
-    const swipeDistance = touchEndY - touchStartY;
-    if (swipeDistance > 50 && !isScrolling) { // Swipe down (adjust threshold as needed)
-        scrollToPreviousSection();
-    } else if (swipeDistance < -50 && !isScrolling) { // Swipe up
-        scrollToNextSection();
+// Adjust light position based on screen size at page load
+window.addEventListener('load', () => {
+    const activeLink = document.querySelector('.nav__link.active');
+    if (activeLink) {
+        adjustLightPosition(activeLink); // Adjust the light position for the active link on load
     }
 });
