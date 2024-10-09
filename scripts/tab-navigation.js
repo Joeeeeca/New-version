@@ -1,7 +1,6 @@
 const links = document.querySelectorAll('.nav__link');
 const light = document.querySelector('.nav__light');
 let isTransitioning = false; // Flag to prevent double transitions
-let isPageReload = true; // Flag to check if it’s a page reload
 
 // Function to move the light to the selected link
 function moveLight(linkElement) {
@@ -15,33 +14,34 @@ function moveLight(linkElement) {
 function setActiveLink(linkActive) {
     console.log(`Setting active link: ${linkActive.textContent}`); // Log the active link
     links.forEach(link => {
-        link.classList.remove('active');
+        link.classList.remove('active'); // Remove active class from all links
     });
-    linkActive.classList.add('active');
+    linkActive.classList.add('active'); // Add active class to the clicked/current link
 }
 
-// Function to set the initial active link from local storage
+// Function to set the initial active link from local storage or current page
 function setInitialActiveLink() {
-    const currentPage = window.location.pathname.split('/').pop() || 'index.html';
-    const lastActiveLink = localStorage.getItem('activeLink') || currentPage;
+    const currentPage = window.location.pathname.split('/').pop() || 'index.html'; // Get current page
+    const lastActiveLink = localStorage.getItem('activeLink') || currentPage; // Fallback to current page if no storage
     console.log(`Current page: ${currentPage}`); // Log the current page
     console.log(`Last active link: ${lastActiveLink}`); // Log the last active link
 
+    // Iterate over the links and match the href with the current page or stored active link
     links.forEach(link => {
-        const linkHref = link.querySelector('a').getAttribute('href');
-
-        if (linkHref === lastActiveLink) {
-            setActiveLink(link);
-            moveLight(link); // Move the light to the last active link on page load
-            console.log(`Light positioned at: ${linkHref}`); // Log positioning on page load
+        const linkHref = link.querySelector('a').getAttribute('href'); // Get the href of the link
+        
+        if (linkHref === lastActiveLink) { // If link matches the stored active or current page
+            setActiveLink(link); // Set this link as active
+            moveLight(link); // Move the light to the active link
+            console.log(`Light positioned at: ${linkHref}`); // Log the active link
         }
     });
 }
 
 // Set the initial active link on DOMContentLoaded
 document.addEventListener('DOMContentLoaded', () => {
-    console.log('Document loaded. Setting initial active link.'); // Log document load
-    setInitialActiveLink(); // Set the initial position of the light based on the last active link
+    console.log('Document loaded. Setting initial active link.');
+    setInitialActiveLink(); // Set the initial active link based on the last active link
 
     links.forEach(link => {
         link.addEventListener('click', event => {
@@ -50,16 +50,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // Check if already transitioning
             if (isTransitioning) {
-                console.log('Transition already in progress.'); // Log if already transitioning
+                console.log('Transition already in progress.');
                 return; // Prevent additional transitions
             }
 
             // Store the active link in local storage
-            localStorage.setItem('activeLink', targetLink.querySelector('a').getAttribute('href'));
-            console.log(`Active link stored: ${targetLink.querySelector('a').getAttribute('href')}`); // Log stored active link
+            const targetHref = targetLink.querySelector('a').getAttribute('href');
+            localStorage.setItem('activeLink', targetHref); // Store the href in local storage
+            console.log(`Active link stored: ${targetHref}`);
 
             // Set transitioning flag
-            isTransitioning = true; 
+            isTransitioning = true;
 
             // Move the light and set active link
             setActiveLink(targetLink); // Activate the clicked link
@@ -67,8 +68,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // Use a timeout to navigate after a slight delay to allow the transition to complete
             setTimeout(() => {
-                window.location.href = targetLink.querySelector('a').getAttribute('href');
-                console.log(`Navigating to: ${targetLink.querySelector('a').getAttribute('href')}`); // Log navigation
+                window.location.href = targetHref; // Navigate to the new page
+                console.log(`Navigating to: ${targetHref}`);
                 isTransitioning = false; // Reset the flag after navigation
             }, 300); // Adjust this delay to match your desired transition timing
         });
@@ -77,44 +78,35 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Directly set the light position on page load without transition
 window.addEventListener('load', () => {
-    console.log('Page loaded. Checking current active link.'); // Log page load
+    console.log('Page loaded. Checking current active link.');
     const currentPage = window.location.pathname.split('/').pop() || 'index.html';
     links.forEach(link => {
         const linkHref = link.querySelector('a').getAttribute('href');
         if (linkHref === currentPage) {
             moveLight(link); // Move the light to the currently loaded page link
-            isPageReload = false; // Set the page reload flag to false
+            setActiveLink(link); // Set the active link
         }
     });
 });
 
-// Use a MutationObserver to detect transitions
-const observer = new MutationObserver(() => {
-    if (isPageReload) {
-        // If it's a page reload, skip transitions
-        light.style.transition = 'none'; // Disable transition temporarily
-        setTimeout(() => {
-            light.style.transition = ''; // Re-enable transition
-        }, 0);
-    } else {
-        light.style.transition = ''; // Ensure transition is enabled
+// Observe the window resize event to adjust light position if necessary
+window.addEventListener('resize', () => {
+    const activeLink = document.querySelector('.nav__link.active');
+    if (activeLink) {
+        moveLight(activeLink); // Re-adjust the light position based on the active link
     }
 });
 
-// Observe the light for changes
-observer.observe(light, {
-    attributes: true
-});
-
-function moveLight(linkElement) {
-  const { offsetLeft, offsetWidth } = linkElement;
-
-  // Check for smaller screens (max-width: 719px)
-  if (window.innerWidth <= 719) {
-      // Adjust the left positioning for smaller screens
-      light.style.left = `${offsetLeft + (offsetWidth / 2) - (light.offsetWidth / 2) + 0}px`; // Adjust this value as necessary
-  } else {
-      // Default positioning for larger screens
-      light.style.left = `${offsetLeft + (offsetWidth / 2) - (light.offsetWidth / 2)}px`;
-  }
+// Function to adjust light position for smaller screens
+function adjustLightPosition(linkElement) {
+    const { offsetLeft, offsetWidth } = linkElement;
+    light.style.left = `${offsetLeft + (offsetWidth / 2) - (light.offsetWidth / 2)}px`;
 }
+
+// Adjust light position based on screen size at page load
+window.addEventListener('load', () => {
+    const activeLink = document.querySelector('.nav__link.active');
+    if (activeLink) {
+        adjustLightPosition(activeLink); // Adjust the light position for the active link on load
+    }
+});
