@@ -382,6 +382,12 @@ margin-right: 10px;
       background-color: var(--bell-icon-color);
     }
 
+    @media (min-width:1024px) {
+      .introduction-section {
+        height: calc(100vh + 120px)
+        }
+    }
+
     @media (min-width: 768px) {
 
 .introduction-section {
@@ -568,8 +574,8 @@ margin-bottom:0;
       align-items: center; /* Centers children horizontally */
       justify-content: flex-start; /* Aligns children at the top */
       background: var(--section-background-gradient); /* Your gradient background */
-      padding-top: 100px; /* Space for fixed navbar */
-      min-height: calc(100vh - 45px); /* Adjust height considering navbar */
+      padding-top: 0px; /* Space for fixed navbar */
+      min-height: calc(100vh + 20px); /* Adjust height considering navbar */
       overflow-y: auto; /* Allow scrolling if content exceeds height */
   }
   
@@ -901,8 +907,8 @@ background-color: var(--footer-bg-color);
   justify-content: center;
   flex-direction: column;
   width: 100%;
-  padding-top: 9rem; /* Space for fixed navbar */
-  min-height: 100vh; /* Adjust height considering navbar */
+  padding-top: 5.3rem; /* Space for fixed navbar */
+  height: calc(100vh + 180px); /* Adjust height considering navbar */
   overflow-y: auto; /* Allow scrolling if content exceeds height */
   text-align:left;
 }
@@ -1326,7 +1332,7 @@ a:link {
 @media (min-width:1024px) {
   .contact-section {
     align-items: center;
-    height: calc(100vh + 104px)
+    height: calc(100vh + 200px)
   }
   .contact-item {
     width:160px;
